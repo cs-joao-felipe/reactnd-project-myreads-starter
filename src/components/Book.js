@@ -5,16 +5,17 @@ class Book extends Component {
 
     static PropTypes = {
         bookToRender: PropTypes.object.isRequired,
+        onShelfUpdate: PropTypes.func.isRequired
     }
 
     render() {
-        const { bookToRender } = this.props
+        const { bookToRender,onShelfUpdate } = this.props
         return (
             <div className="book">
                 <div className="book-top">
-                    <div className="book-cover" style={{width: 128, height: 193, backgroundImage: `url(${bookToRender.imageLinks.thumbnail})`}}></div>
+                    <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${bookToRender.imageLinks.thumbnail})` }}></div>
                     <div className="book-shelf-changer">
-                        <select>
+                        <select value={bookToRender.shelf || 'none'} onChange={(event) => onShelfUpdate(bookToRender.id, event.target.value)}>
                             <option value="none" disabled>Move to...</option>
                             <option value="currentlyReading">Currently Reading</option>
                             <option value="wantToRead">Want to Read</option>
@@ -24,7 +25,8 @@ class Book extends Component {
                     </div>
                 </div>
                 <div className="book-title">{bookToRender.title}</div>
-                <div className="book-authors">{bookToRender.authors.toString()}</div>
+                {/*DISCLAIMER: due to some books having their authors with a null value, i made this work around */}
+                <div className="book-authors">{(bookToRender.authors || []).toString()}</div>
             </div>
         )
     }

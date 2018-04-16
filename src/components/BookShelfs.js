@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import Shelf from './Shelf'
 
 class BookShelfs extends Component {
     static PropTypes = {
         books: PropTypes.array.isRequired,
+        onShelfUpdate: PropTypes.func.isRequired
     }
 
     filter = (books, category) => {
@@ -16,7 +17,7 @@ class BookShelfs extends Component {
         const WANT_TO_READ = { title: 'Want To Read', category: 'wantToRead' }
         const CURRENTLY_READING = { title: 'Currently Reading', category: 'currentlyReading' }
         const READ = { title: 'Read', category: 'read' }
-        const { books } = this.props
+        const { books, onShelfUpdate } = this.props
         return (
 
             <div className="list-books">
@@ -25,12 +26,12 @@ class BookShelfs extends Component {
                 </div>
                 <div className="list-books-content">
                     <div>
-                        <Shelf title={CURRENTLY_READING.title} books={this.filter(books, CURRENTLY_READING.category)} />
-                        <Shelf title={WANT_TO_READ.title} books={this.filter(books, WANT_TO_READ.category)} />
-                        <Shelf title={READ.title} books={this.filter(books, READ.category)} />
+                        <Shelf title={CURRENTLY_READING.title} books={this.filter(books, CURRENTLY_READING.category)} onShelfUpdate={onShelfUpdate} />
+                        <Shelf title={WANT_TO_READ.title} books={this.filter(books, WANT_TO_READ.category)} onShelfUpdate={onShelfUpdate} />
+                        <Shelf title={READ.title} books={this.filter(books, READ.category)} onShelfUpdate={onShelfUpdate} />
                     </div>
                     <div className="open-search">
-                        <Link to='/search'>Search a book</Link>
+                        <Link to='/search'>Add a book</Link>
                     </div>
                 </div>
             </div>
