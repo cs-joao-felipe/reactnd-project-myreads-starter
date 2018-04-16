@@ -13,7 +13,9 @@ class Book extends Component {
         return (
             <div className="book">
                 <div className="book-top">
+                {(bookToRender.imageLinks) &&
                     <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${bookToRender.imageLinks.thumbnail})` }}></div>
+                }
                     <div className="book-shelf-changer">
                         <select value={bookToRender.shelf || 'none'} onChange={(event) => onShelfUpdate(bookToRender.id, event.target.value)}>
                             <option value="none" disabled>Move to...</option>
@@ -25,8 +27,9 @@ class Book extends Component {
                     </div>
                 </div>
                 <div className="book-title">{bookToRender.title}</div>
-                {/*DISCLAIMER: due to some books having their authors with a null value, i made this work around */}
-                <div className="book-authors">{(bookToRender.authors || []).toString()}</div>
+                {(bookToRender.authors) &&
+                    <div className="book-authors">{bookToRender.authors.toString()}</div>
+                }
             </div>
         )
     }

@@ -8,39 +8,52 @@ import './App.css'
 class BooksApp extends React.Component {
 
   state = {
-    books: []
+    library: [],
+    search_results: []
   }
 
   componentDidMount() {
-    BooksAPI.getAll().then((books) => {
-      this.setState({ books })
+    BooksAPI.getAll().then((library) => {
+      this.setState({ library })
     })
+  }
+
+  handleSearchChange = (query) => {
+    if (query === '') {
+      this.setState({ search_results: [] })
+    } else {
+      BooksAPI
+        .search(query)
+        .then((search_results) => {
+          this.setState({ search_results })
+        })
+        .catch(err => {
+          console.log(err)
+          this.setState({ search_results: [], error: err })
+        })
+    }
   }
 
   handleBookShelfChange = (book_id, shelf) => {
     BooksAPI
-      .get(book_id)
-      .then((book) => {
-        BooksAPI
-          .update(book, shelf)
-          .then(BooksAPI
-            .getAll()
-            .then((books) => {
-              this.setState({ books })
-            }))
-      })
-
+      .update(book_id, shelf)
+      .then(BooksAPI
+        .getAll()
+        .then((library) => {
+          this.setState({ library })
+        }))
   }
 
   render() {
+    const { library, search_results, error } = this.state
     return (
       <div className="app">
         <Route exact path='/search' render={() => (
-          <SearchBooks onShelfUpdate={this.handleBookShelfChange} />
+          <SearchBooks books={search_results} onSearchUpdate={this.handleSearchChange} onShelfUpdate={this.handleBookShelfChange} error={error} />
         )}
         />
         <Route exact path='/' render={() => (
-          <BookShelfs books={this.state.books} onShelfUpdate={this.handleBookShelfChange} />
+          <BookShelfs books={library} onShelfUpdate={this.handleBookShelfChange} />
         )}
         />
       </div>
