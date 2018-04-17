@@ -11,7 +11,6 @@ class BookShelfs extends Component {
 
     filter = (books, category) => {
         let filtered_books = Array.from(books.values()).filter((b) => b.shelf === category)
-        console.log(filtered_books)
         return filtered_books
     }
 

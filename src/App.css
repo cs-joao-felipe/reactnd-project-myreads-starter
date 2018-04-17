@@ -139,6 +139,9 @@ body, .app {
   display: flex;
   align-items: flex-end;
 }
+.book-top a {
+  cursor: pointer;
+}
 
 .book-shelf-changer {
   position: absolute;
@@ -172,3 +175,4 @@ body, .app {
   text-align: center;
   font-size: 0.8em;
 }
+
