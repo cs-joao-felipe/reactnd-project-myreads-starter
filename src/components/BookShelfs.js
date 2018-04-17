@@ -5,12 +5,14 @@ import Shelf from './Shelf'
 
 class BookShelfs extends Component {
     static PropTypes = {
-        books: PropTypes.array.isRequired,
+        books: PropTypes.instanceOf(Map).isRequired,
         onShelfUpdate: PropTypes.func.isRequired
     }
 
     filter = (books, category) => {
-        return books.filter((b) => b.shelf === category)
+        let filtered_books = Array.from(books.values()).filter((b) => b.shelf === category)
+        console.log(filtered_books)
+        return filtered_books
     }
 
     render() {
