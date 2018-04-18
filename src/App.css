@@ -176,3 +176,17 @@ body, .app {
   font-size: 0.8em;
 }
 
+.twitter-share-button {
+  position: absolute;
+  left: 0;
+  bottom: -10px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-image: url('./icons/twitter-logo.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 40px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+

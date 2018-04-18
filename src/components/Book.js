@@ -42,6 +42,14 @@ class Book extends Component {
                             </div>
                         }
                     </a>
+                    {(bookToRender.shelf === 'currentlyReading') &&
+                        <a target='_blank'
+
+                            href={`https://www.twitter.com/intent/tweet?text=I%20am%20currently%20reading%20%22${bookToRender.title}%22&hashtags=MyReads,Udacity,React`}
+                        >
+                            <div className='twitter-share-button'></div>
+                        </a>
+                    }
                     <div className="book-shelf-changer">
                         <select value={bookToRender.shelf || 'none'} onChange={(event) => onShelfUpdate(bookToRender.id, event.target.value)}>
                             <option value="" disabled>Move to...</option>
@@ -62,14 +70,6 @@ class Book extends Component {
                     <BookDetail bookToRender={bookToRender} />
                     <button onClick={this.handleCloseModal}>Close</button>
                 </Modal>
-                {(bookToRender.shelf === 'currentlyReading') &&
-                    <a target='_blank'
-                        className="twitter-share-button"
-                        href={`https://www.twitter.com/intent/tweet?text=I%20am%20currently%20reading%20${bookToRender.title}&hashtags=MyReads,Udacity,React`}
-                    >
-                        Tweet
-                    </a>
-                }
             </div>
         )
     }
