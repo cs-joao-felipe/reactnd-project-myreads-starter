@@ -66,9 +66,10 @@ class Book extends Component {
                 }
                 <Modal
                     isOpen={showDetail}
-                    contentLabel={`${bookToRender.title} Details`}>
-                    <BookDetail bookToRender={bookToRender} />
-                    <button onClick={this.handleCloseModal}>Close</button>
+                    contentLabel={`${bookToRender.title} Details`}
+                    className="Modal"
+                    overlayClassName="Overlay">
+                    <BookDetail bookToRender={bookToRender} onCloseModal={this.handleCloseModal} />
                 </Modal>
             </div>
         )

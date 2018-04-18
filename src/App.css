@@ -190,3 +190,48 @@ body, .app {
   box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }
 
+.book-detail-close-button {
+  float: top;
+}
+
+.book-detail-left {
+  padding: 1%;
+  float: left;
+  width: 25%;
+}
+
+.book-details-right {
+  padding: 1%;
+  float: right;
+  width: 70%;
+}
+
+.book-detail-label,
+.book-detail-text {
+  font-size: 0.8em;
+}
+.book-detail-label {
+  margin-top: 10px;
+}
+.book-detail-text {
+  color: #999;
+}
+
+.Modal {
+  position: absolute;
+  top: 15%;
+  left: 30%;
+  right: 30%;
+  bottom: 10%;
+  background-color: papayawhip;
+  overflow: auto;
+}
+
+.Overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: 'rgba(255, 255, 255, 0.75)'
+}
