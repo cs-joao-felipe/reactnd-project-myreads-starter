@@ -9,7 +9,8 @@ class BooksApp extends React.Component {
 
   state = {
     library: new Map(),
-    search_results: new Map()
+    search_results: new Map(),
+    query: ''
   }
 
   componentDidMount() {
@@ -23,14 +24,17 @@ class BooksApp extends React.Component {
 
   handleSearchChange = (query) => {
     if (query === '') {
-      this.setState({ search_results: new Map() })
+      this.setState({ search_results: new Map(), query: query })
     } else {
+      this.setState({ query: query })
       BooksAPI
         .search(query)
         .then((books) => {
           var search_results = new Map()
           books.map(book => search_results.set(book.id, book))
-          this.setState({ search_results })
+          if (query === this.state.query) {
+            this.setState({ search_results })
+          }
         })
         .catch(err => {
           console.log(err)
@@ -46,16 +50,21 @@ class BooksApp extends React.Component {
     BooksAPI.update(book_id, shelf)
     if (tmp_library.has(book_id)) {
       tmp_book = tmp_library.get(book_id)
+      tmp_book.shelf = shelf
+      tmp_library.set(book_id, tmp_book)
+      this.setState((previousState) => ({
+        library: tmp_library
+      }))
     } else {
       BooksAPI.get(book_id).then((book) => {
         tmp_book = book
+        tmp_book.shelf = shelf
+        tmp_library.set(book_id, tmp_book)
+        this.setState((previousState) => ({
+          library: tmp_library
+        }))
       })
     }
-    tmp_book.shelf = shelf
-    tmp_library.set(book_id, tmp_book)
-    this.setState((previousState) => ({
-      library: previousState.library.set(book_id, tmp_book)
-    }))
   }
 
   render() {
