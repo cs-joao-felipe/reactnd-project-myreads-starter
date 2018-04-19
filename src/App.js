@@ -43,26 +43,23 @@ class BooksApp extends React.Component {
     }
   }
 
+  updateLibrary = (book) => {
+    this.setState((previousState) => ({
+      library: previousState.library.set(book.id, book)
+    }))
+  }
+
   handleBookShelfChange = (book_id, shelf) => {
-    let tmp_library = this.state.library
-    let tmp_book
 
     BooksAPI.update(book_id, shelf)
-    if (tmp_library.has(book_id)) {
-      tmp_book = tmp_library.get(book_id)
-      tmp_book.shelf = shelf
-      tmp_library.set(book_id, tmp_book)
-      this.setState((previousState) => ({
-        library: tmp_library
-      }))
+    if (this.state.library.has(book_id)) {
+      let book = this.state.library.get(book_id)
+      book.shelf = shelf
+      this.updateLibrary(book)
     } else {
       BooksAPI.get(book_id).then((book) => {
-        tmp_book = book
-        tmp_book.shelf = shelf
-        tmp_library.set(book_id, tmp_book)
-        this.setState((previousState) => ({
-          library: tmp_library
-        }))
+        book.shelf = shelf
+        this.updateLibrary(book)
       })
     }
   }
