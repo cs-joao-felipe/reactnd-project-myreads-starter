@@ -17,7 +17,7 @@ class Book extends Component {
 
     static PropTypes = {
         bookToRender: PropTypes.object.isRequired,
-        onShelfUpdate: PropTypes.func.isRequired
+        onShelfUpdate: PropTypes.func.isRequired,
     }
 
     handleOpenModal = () => {

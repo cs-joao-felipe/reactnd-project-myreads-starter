@@ -5,15 +5,39 @@ import Book from './Book'
 
 class SearchBooks extends Component {
 
+    state = {
+        selected_for_bulk_update: new Set()
+    }
+
     static PropTypes = {
         library: PropTypes.instanceOf(Map).isRequired,
         books: PropTypes.instanceOf(Map).isRequired,
         onShelfUpdate: PropTypes.func.isRequired,
-        onSearchUpdate: PropTypes.func.isRequired
+        onSearchUpdate: PropTypes.func.isRequired,
     }
 
-    componentWillUnmount() {
-        this.props.onSearchUpdate('')
+    handleBulkShelfChange = (shelf) => {
+        this.state.selected_for_bulk_update.forEach(book_id => {
+            this.props.onShelfUpdate(book_id, shelf)
+        })
+        this.setState({
+            selected_for_bulk_update: new Set()
+        })
+    }
+
+    toggleBulkUpdate = (book_id) => {
+        if (this.state.selected_for_bulk_update.has(book_id)) {
+            this.setState((previousState) => ({
+                selected_for_bulk_update: previousState.selected_for_bulk_update.delete(book_id)
+            }))
+
+        } else {
+            this.setState((previousState) => ({
+                selected_for_bulk_update: previousState.selected_for_bulk_update.add(book_id)
+            }))
+        }
+
+
     }
 
     render() {
@@ -32,13 +56,28 @@ class SearchBooks extends Component {
                     </div>
                 </div>
                 <div className="search-books-results">
+                    {books.size > 0 &&
+                        <div>
+                            <label>Bulk Update</label>
+                            <select value="" onChange={(event) => { this.handleBulkShelfChange(event.target.value) }}>
+                                <option value="" disabled>Move to...</option>
+                                <option value="currentlyReading">Currently Reading</option>
+                                <option value="wantToRead">Want to Read</option>
+                                <option value="read">Read</option>
+                            </select>
+                        </div>
+                    }
                     <ol className="books-grid">
                         {books.size > 0 && Array.from(books.values()).map((book) => {
-                            console.log(book.id + ': '+ library.has(book.id) + 'title: '+ book.title)
                             if (library.has(book.id)) {
                                 book.shelf = library.get(book.id).shelf
                             }
-                            return <Book key={book.id} bookToRender={book} onShelfUpdate={onShelfUpdate} />
+                            return (
+                                <div key={`div-${book.id}`}>
+                                    {!book.shelf && <input key={`checkbox-${book.id}`} type='checkbox' className='book-checkbox' onChange={(event) => this.toggleBulkUpdate(book.id)} />}
+                                    <Book key={book.id} bookToRender={book} onShelfUpdate={onShelfUpdate} />
+                                </div>
+                            )
                         })}
                     </ol>
                 </div>
